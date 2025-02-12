@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %} Homepage {% endblock %}
+
+{% block content %}
+
+<div class="container " >
+
+    <div >
+        <div >
+        <h1 >Welcome {{user.first_name}}! This is the company's communication app. </h1>
+
+        <div>
+            <h2>All Staffs</h2>
+            {% for u in users %}
+            <a href="/user/{{u.id}}">{{u.first_name}} {{u.last_name}}</a>
+            {% endfor %}
+
+        </div>
+
+    
+    </div>
+    </div>
+    </div>
+{% endblock %}

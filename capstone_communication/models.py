@@ -21,7 +21,8 @@ class User(db.Model):
 
     def __repr__(self):
         user = self
-        return f"<User {user.id} {user.email} {user.username} {user.password}"
+        return f"<User {user.id} {user.email} {user.username} {user.password}{user.first_name}{user.last_name}>"
+
 
     id = db.Column(
         db.Integer,
@@ -33,7 +34,16 @@ class User(db.Model):
         nullable=False,
         unique=True,
     )
-
+    first_name = db.Column(
+        db.Text,
+        nullable=False,
+        unique=True,
+    )
+    last_name = db.Column(
+        db.Text,
+        nullable=False,
+        unique=True,
+    )
     username = db.Column(
         db.Text,
         nullable=False,
@@ -51,7 +61,7 @@ class User(db.Model):
     )
 
     @classmethod
-    def signup(cls, username, password, email,image_url):
+    def signup(cls, username, password, email,image_url,first_name,last_name):
         """Sign up user.
 
         Hashes password and adds user to system.
@@ -64,6 +74,8 @@ class User(db.Model):
             password=hashed_pwd,
             email=email,
             image_url=image_url,
+            first_name=first_name,
+            last_name=last_name,
         )
         db.session.add(user)
         return user
