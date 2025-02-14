@@ -127,6 +127,16 @@ def user_page(user_id):
     
     
     return render_template("user_page.html",user = user )
+@app.route("/list")
+def name_list():
+    if g.user:
+        user = g.user
+        users = User.query.all()
+        return render_template("list.html", user = g.user, users=users)
+    else:
+        flash("please login","error")
+        return redirect("/")
+
 
 @app.route("/user/<int:user_id>/email", methods = ["GET","POST"])
 def profile_update(user_id):

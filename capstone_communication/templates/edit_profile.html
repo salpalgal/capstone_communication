@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %} edit profile {% endblock %}
+
+{% block content %} 
+<div class="container">
+    <h1 class="display-1 my-4">Edit Form</h1>
+    <div class="row">
+        <div class = "col-md-6 border shadow rounded p-4 bg bg-light">
+            <form action="/user/{{user.id}}/email"" method = "POST">
+                {{ form.hidden_tag() }}
+                {% for field in form if field.widget.input_type != 'hidden'%}
+                {% for error in field.error %}
+                <span>{{error}}</span>
+                {% endfor %}
+                <div class="form-group">
+                <label for=""> {{field.name}} : </label>
+                {{field(class="form-control")}}
+            </div>
+                {% endfor %}
+                
+                <button class="btn btn-success btn-block">Email</button>
+        </div>
+        <!-- <div class="col-md-6 ">
+            <img class="shadow"style="height:350px"src="https://images.unsplash.com/photo-1455619452474-d2be8b1e70cd?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="">
+        </div> -->
+    </div>
+</div>
+
+</form>
+
+{% endblock %}

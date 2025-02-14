@@ -4,26 +4,53 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title%}{% endblock %}</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" >
 </head>
-<body>
-    <!-- {% for category, message in get_flashed_messages(with_categories=True) %}
-    <div class="alert alert-{{ category }}">{{ message }}</div>
-    {% endfor %} -->
-    {% if g.user %}
-    <a href="/home" class = "nav-item nav-link">Home</a>
-    <a href="/logout" class = "nav-item nav-link">Logout</a>
-
-    {% endif %} 
-    {% if not g.user %}
-    <a href="/signup"> Signup</a>
-    <a href="/login"> Login</a>
-    {% endif %}
-
-    {% block content %}
+<body style="background-color:#dcf7c6 ;">
+    <nav class = "navbar navbar-expand-md navbar-dark bg-dark" >
+        
+        <a href="/" class = "navbar-brand">CommunicationApp</a>
+        <button class = "navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class = "collapse navbar-collapse" id = "navbarNavAltMarkup">
+        <div class = "navbar-nav">
+        
+        <a href="/home" class = "nav-item nav-link">Home</a>
+        
+        <!-- <div class = "dropdown">
+        <button class ="btn btn-outline-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Find Recipes</button>
+            <div class = "dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a href="/search" class = "dropdown-item">Search</a>
+                <a href="/list" class = "dropdown-item">Recipe Results </a>
+            </div>
+        </div> -->
+        {% if g.user %}
+        <a href="/list" class = "nav-item nav-link">Name List</a>
+        {% endif %}
+        
+        {% if not g.user %}
+        
+        <a href="/signup" class = "nav-item nav-link">Sign up</a>
+        <a href="/login" class = "nav-item nav-link">Log in</a>
+        {% else %}
+        <a href="/logout" class = "nav-item nav-link">Logout</a>
+        {% endif %}
+        </div>   
+        </div>
+    </nav>
     
- 
+    {% for category, message in get_flashed_messages(with_categories=True) %}
+    <div class="alert alert-{{ category }}">{{ message }}</div>
+    {% endfor %}
+   
+    {% block content %}
    
     {% endblock %}
+    <script src="https://unpkg.com/jquery"></script>
+    <script src="https://unpkg.com/popper"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"></script>
     
 </body>
 </html>

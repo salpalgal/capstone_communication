@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block title %} search list {% endblock%}
+
+{% block content %}
+
+
+
+<div class="container">
+<h1 class="display-1 my-4"> searched recipes list</h1>
+<div class="row">   
+    
+   {% for recipe in recipes %}
+   {% for d in data %}
+   {% if recipe.api_recipe_id == d.id %}
+    
+    <div class=" card shadow rounded col-3 p-4 m-4">
+        <img src="{{d.image}}" alt="" class="img-fluid card-img-top">
+        <div class="card-body">
+        <h5 class="card-title"><a href="/recipe/{{recipe.id}}/details">{{d.title}}</a></h5>
+        
+        <p class="card-text">Missed Ingredients : {{d.missedIngredientCount}}</p>
+        
+        <form action="/recipe/{{recipe.id}}/fav" method = "POST">
+            <button class="btn btn-outline-success shadow btn-lg"><i class="fa-regular fa-thumbs-up"></i></button>
+        </form>
+        </div>
+    
+    </div> 
+   {% endif %}
+   {% endfor %}
+   {% endfor %}
+</div>
+</div>
+{% endblock%}
