@@ -15,8 +15,12 @@
                 <span>{{error}}</span>
                 {% endfor %}
                 <div class="form-group">
+                {% if field.name == "send_to" %}
+                <label>send_to : {{user.email}}</label>
+                {% else %}
                 <label for=""> {{field.name}} : </label>
                 {{field(class="form-control")}}
+                {% endif %}
             </div>
                 {% endfor %}
                 

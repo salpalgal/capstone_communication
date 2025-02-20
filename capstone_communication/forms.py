@@ -14,6 +14,7 @@ class SignUpForm(FlaskForm):
     username = StringField("username", validators = [DataRequired()])
     password = PasswordField("password", validators = [Length(min = 6)])
     email = StringField("email", validators = [DataRequired(), Email()])
+  
     image_url = StringField("image_url")
     
 
@@ -23,7 +24,8 @@ class LoginForm(FlaskForm):
     password = PasswordField("password", validators = [Length(min = 6)])
 
 class SendEmailForm(FlaskForm):
-    send_to = StringField("send_to", validators = [DataRequired(), Email()])
+    # send_to = StringField("send_to", validators = [DataRequired(), Email()])
+    email_password = PasswordField("email_password", validators = [Length(min = 6)])
     # send_from = StringField("send_From", validators = [DataRequired(), Email()])
     subject = TextAreaField("content", validators = [DataRequired()])
     content = TextAreaField("content", validators = [DataRequired()])

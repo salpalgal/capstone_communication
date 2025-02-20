@@ -2,6 +2,13 @@ from flask import Flask,render_template,g,session,flash,redirect
 from flask_debugtoolbar import DebugToolbarExtension
 import requests
 import json
+
+import smtplib,ssl
+import imaplib
+import getpass
+
+# Import the email modules we'll need
+from email.mime.text import MIMEText
 # from api_key import api_key
 from forms import SignUpForm, LoginForm , SendEmailForm, EditProfileForm
 from sqlalchemy.exc import IntegrityError
@@ -24,7 +31,7 @@ app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 CURR_USER_KEY = "curr_user"
 connect_db(app)
 
-
+db.drop_all()
 db.create_all()
 
 
@@ -143,37 +150,36 @@ def profile_update(user_id):
     if not g.user:
         flash("Access unauthorized.", "danger")
         return redirect("/")
-    user = User.query.get_or_404(user_id) 
+    from_user = g.user
+    to_user = User.query.get_or_404(user_id) 
     form = SendEmailForm()
+    send_to = to_user.email
+    send_from = from_user.email
     if form.validate_on_submit():
-        send_to = form.send_to.data
-        # send_from = form.send_From.data
+        
+        password= form.email_password.data
         subject = form.subject.data
         content = form.content.data
-        url = "https://api.us.nylas.com/send"
-        payload = json.dumps({
-        "body": content,
-        "subject": subject,
-        "to": [
-        {
-            "name": user.first_name,
-            "email": send_to
-        }
-        ]
-        })
-        headers = {
-        'Content-Type': 'application/json',
-        'Authorization': '[[Authorization-masked-secret]]'
-        }
+        def send_email(subject, content, send_from, send_to, password):
+            msg = MIMEText(content)
+            msg['Subject'] = subject
+            msg['From'] = send_from
+            msg['To'] = send_to
+            with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp_server:
+                smtp_server.login(send_from, password)
+                smtp_server.sendmail(send_from, send_to, msg.as_string())
+            print("Message sent!")
 
-        response = requests.request("POST", url, headers=headers, data=payload)
 
-        print(response.text)
-
+        send_email(subject, content, send_from, send_to, password)
+        # mail = imaplib.IMAP4_SSL('imap.gmail.com')
+        # mail.login(send_to, app_password)
+        # print(f"Successfully logged in with app-specific password for {email}")
+        # mail.logout()
         
-        return redirect(f"/user/{user.id}") 
+        return redirect(f"/user/{to_user.id}") 
     else:
-        return render_template("send_email.html", form = form, user = user)
+        return render_template("send_email.html",form = form, user = to_user)
 
     # @app.route("/search", methods = ["GET", "POST"])
 # def search():

@@ -18,9 +18,7 @@
         <ul class="list-group list-group-flush">
             
             {% for u in users %}
-            {% if u.username != user.username %}
             <a class="list-group-item " href="/user/{{u.id}}">{{u.first_name}} {{u.last_name}}</a>
-            {% endif %}
             {% endfor %}
           </ul>
         

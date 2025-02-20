@@ -21,7 +21,7 @@ class User(db.Model):
 
     def __repr__(self):
         user = self
-        return f"<User {user.id} {user.email} {user.username} {user.password}{user.first_name}{user.last_name}>"
+        return f"<User {user.id} {user.email}{user.username} {user.password}{user.first_name}{user.last_name}>"
 
 
     id = db.Column(
@@ -34,6 +34,7 @@ class User(db.Model):
         nullable=False,
         unique=True,
     )
+
     first_name = db.Column(
         db.Text,
         nullable=False,
@@ -60,6 +61,7 @@ class User(db.Model):
         nullable=False
     )
 
+    
     @classmethod
     def signup(cls, username, password, email,image_url,first_name,last_name):
         """Sign up user.
@@ -68,6 +70,7 @@ class User(db.Model):
         """
 
         hashed_pwd = bcrypt.generate_password_hash(password).decode('UTF-8')
+       
 
         user = User(
             username=username,
