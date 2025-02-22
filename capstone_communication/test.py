@@ -1,9 +1,10 @@
 import os
 from unittest import TestCase
 from flask import g, session
-from models import db, connect_db, Recipe, User, Favorite
+from models import db, connect_db, User
+from api_key import email, app_password
 
-os.environ['DATABASE_URL'] = "postgresql:///recipe-test"
+os.environ['DATABASE_URL'] = "postgresql:///communication_db"
 
 from app import app, CURR_USER_KEY
 
@@ -11,7 +12,7 @@ from app import app, CURR_USER_KEY
 app.config['WTF_CSRF_ENABLED'] = False
 
 
-class RecipeViewTestCase(TestCase):
+class SendEmailTestCase(TestCase):
     def setUp(self):
         """Create test client, add sample data."""
 
@@ -22,70 +23,18 @@ class RecipeViewTestCase(TestCase):
         self.client = app.test_client()
 
         self.testuser = User.signup(username="testuser",
-                                    email="test@test.com",
+                                    email=email,
                                     password="testuser",
-                                    image_url=None)
+                                    image_url=None,
+                                    first_name="Bob",
+                                    last_name="Builder")
+                                    
         self.testuser_id = 1001
         self.testuser.id = self.testuser_id
 
         db.session.commit()
        
         
-    def test_search(self):
-        with self.client as c:
-            with c.session_transaction() as sess:
-                sess[CURR_USER_KEY] = self.testuser.id
-
-            res = c.post("/search", data = {"ingredients": "chicken", "number":1}, follow_redirects= True)
-            html = res.get_data(as_text = True)
-
-            self.assertEqual(res.status_code, 200)
-            self.assertIn("<h1> searched recipes list</h1>", html)
-            self.assertIn("Number of Missed Ingredients", html)
-    def test_user_show(self):
-        with self.client as client:
-            with client.session_transaction() as sess:
-                sess[CURR_USER_KEY] = self.testuser.id
-            res = client.get(f"/user/{self.testuser.id}")
-
-            self.assertEqual(res.status_code, 200)
-
-    def test_add_fav(self):
-        r1 = Recipe(id = 3333, user_id = self.testuser.id, api_recipe_id = 12345)
-        db.session.add(r1)
-        db.session.commit()
-    
-        with self.client as client:
-            with client.session_transaction() as sess:
-                sess[CURR_USER_KEY]= self.testuser.id
-                sess['res'] = []
-            resp = client.post("/recipe/3333/fav", follow_redirects = True)
-
-            self.assertEqual(resp.status_code, 200)
-
-            favs = Favorite.query.filter(Favorite.recipe_id == 3333).all()
-
-            self.assertEqual(len(favs), 1)
-
-    def test_remove_fav(self):
-        r1 = Recipe(id = 3333, user_id = self.testuser.id, api_recipe_id = 12345)
-        db.session.add(r1)
-        db.session.commit()
-        fav = Favorite(user_id = self.testuser.id, recipe_id = 3333)
-        db.session.add(fav)
-        db.session.commit()
-
-        with self.client as client:
-            with client.session_transaction() as sess:
-                sess[CURR_USER_KEY] = self.testuser.id
-                sess['res'] = []
-            resp = client.post("recipe/3333/unfav", follow_redirects = True)
-
-            self.assertEqual(resp.status_code, 200)
-
-            f = Favorite.query.filter(Favorite.recipe_id == 3333).all()
-
-            self.assertEqual(len(f), 0)
 
     def test_login(self):
         with self.client as client:
@@ -93,7 +42,7 @@ class RecipeViewTestCase(TestCase):
             html = res.get_data(as_text = True)
 
             self.assertEqual(res.status_code, 200)
-            self.assertIn("<h3>Welcome testuser!</h3>", html)
+            self.assertIn("Welcome Bob!" , html)
 
     def test_logout(self):
         with self.client as client:
@@ -103,4 +52,14 @@ class RecipeViewTestCase(TestCase):
             html = res.get_data(as_text = True)
             
             self.assertEqual(res.status_code, 200)
-            self.assertIn("root page", html)
+            self.assertIn("Communication App", html)
+    def send_email(self):
+        with self.client as client:
+            with client.session_transaction() as sess:
+                sess[CURR_USER_KEY] = self.testuser_id
+            res = client.post("/user/1001/email", data ={"password":app_password,"subject" : "testing", "content":"hellow world"}, follow_redirects=True)
+            html = res.get_data(as_text = True)
+
+            self.assertEqual(res.status_code, 200)
+            self.assertIn("Bob Builder", html)
+

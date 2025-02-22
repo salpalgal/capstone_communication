@@ -78,7 +78,7 @@ class User(db.Model):
             email=email,
             image_url=image_url,
             first_name=first_name,
-            last_name=last_name,
+            last_name=last_name
         )
         db.session.add(user)
         return user
