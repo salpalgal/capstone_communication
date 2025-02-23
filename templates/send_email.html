@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %} send email {% endblock %}
+
+{% block content %} 
+<div class="container">
+
+    <h1 class="display-1 my-4">Email Form</h1>
+    <div class="row">
+        <div class = "col-md-6 border shadow rounded p-4 bg bg-light">
+            <form action="/user/{{user.id}}/email" method = "POST">
+                {{ form.hidden_tag() }}
+                {% for field in form if field.widget.input_type != 'hidden'%}
+                {% for error in field.error %}
+                <span>{{error}}</span>
+                {% endfor %}
+                <div class="form-group">
+                {% if field.name == "send_to" %}
+                <label>send_to : {{user.email}}</label>
+                {% else %}
+                <label for=""> {{field.name}} : </label>
+                {{field(class="form-control")}}
+                {% endif %}
+            </div>
+                {% endfor %}
+                
+                <button class="btn btn-success btn-block">Send</button>
+        </div>
+       
+    </div>
+</div>
+
+</form>
+
+{% endblock %}

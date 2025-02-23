@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %} Homepage {% endblock %}
+
+{% block content %}
+
+<div class="container" >
+    <h3 class="display-1 my-4">Welcome {{user.first_name}}!</h3>
+    
+    <div class="row border align-items-center justify-content-left" style="height:400px; background-image:url('https://images.unsplash.com/photo-1739036462754-6e86520998a2?q=80&w=2075&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');background-size:100%; background-position:50%;">
+    <div class = "col-md-4 "  >
+        <div class="btn-group my-3" >
+        <form action="/list">
+            <button  class="btn btn-warning btn-lg m-3" ">Employes List</button>
+        </form>
+      
+        </div>
+        
+    </div>
+    </div>
+    </div>
+{% endblock %}
