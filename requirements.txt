@@ -15,7 +15,7 @@ Flask-Bcrypt==0.7.1
 Flask-DebugToolbar==0.10.1
 Flask-SQLAlchemy==2.4.1
 Flask-WTF==1.2.1
-greenlet==3.0.2
+greenlet >= 1.1 
 gunicorn==21.2.0
 idna==3.6
 ipython==7.18.1
