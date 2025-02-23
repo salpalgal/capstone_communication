@@ -21,10 +21,10 @@ import os
 
 
 app = Flask(__name__)
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///my_reads_db'
+
 app.config['SQLALCHEMY_DATABASE_URI'] = (
     os.environ.get('DATABASE_URL', 'postgresql:///communication_db'))
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///recipe_db'
+-
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = True
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
@@ -58,7 +58,7 @@ def do_login(user):
 
 def do_logout():
     """Logout user."""
-    # user = g.user
+
     if CURR_USER_KEY in session:
         del session[CURR_USER_KEY]
 
@@ -107,13 +107,12 @@ def signup():
 @app.route("/login", methods =["GET","POST"])
 def login():
     form = LoginForm()
-    # user = g.user
     if form.validate_on_submit():
         user = User.authenticate(form.username.data, form.password.data)
         
         if user:
             do_login(user)
-            # flash(f"Hello, {user.username}!", "success")
+            
             return redirect("/home")
         
     return render_template("login.html", form = form)
@@ -172,29 +171,9 @@ def profile_update(user_id):
 
 
         send_email(subject, content, send_from, send_to, password)
-        # mail = imaplib.IMAP4_SSL('imap.gmail.com')
-        # mail.login(send_to, app_password)
-        # print(f"Successfully logged in with app-specific password for {email}")
-        # mail.logout()
+       
         
         return redirect(f"/user/{to_user.id}") 
     else:
         return render_template("send_email.html",form = form, user = to_user)
 
-    # @app.route("/search", methods = ["GET", "POST"])
-# def search():
-    
-#     if not g.user:
-#         flash("Access unauthorized.", "danger")
-#         return redirect("/")
-#     form = RecipeSearchForm()
-#     if form.validate_on_submit():
-#         ingredients = form.ingredients.data
-#         number = form.number.data
-#         res =  requests.get(f"https://api.spoonacular.com/recipes/findByIngredients?apiKey={api_key}",params={"ingredients": ingredients ,"number": number})
-#         session["res"] = res.json()
-    
-
-#         return redirect(url_for('.search_list',res = res) )
-#     else:
-#         return render_template("search.html", form= form, user= g.user) 
