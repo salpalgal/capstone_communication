@@ -16,7 +16,7 @@ dataclasses-json==0.6.7
 dbus-python==1.2.18
 decorator==4.3.0
 distro==1.7.0
-distro-info==1.1+ubuntu0.1
+distro-info==1.0
 dnspython==2.4.2
 email-validator==2.1.0.post1
 exceptiongroup==1.2.2
