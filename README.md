@@ -21,7 +21,7 @@ nav bar that contains:
 From the landing site, users can either sign up to create a new user or log in to existing account. Once logged in, the user will come to the homepage. From here, user can click on list of employees to find co-worker to send an gmail to.Clicking on the names of the employees list will lead to that user's profile page. From there, the send email button leads to a email form. Once filled out, the user can send a gmail to the co-worker they wish to communicate with. To logout, click on logout button. Once again, user will be back to the landing page.
 ## Links
 - [smtp server](smtp.gmail.com)
-- [site url]([https://recipe-app-kjil.onrender.com](https://company-communication-app-7a8b5e846acd.herokuapp.com/))
+- [site url]([https://recipe-app-kjil.onrender.com](https://company-communication-app-7a8b5e846acd.herokuapp.com/)
 ## Technology 
 - python flask
 - postgresql
